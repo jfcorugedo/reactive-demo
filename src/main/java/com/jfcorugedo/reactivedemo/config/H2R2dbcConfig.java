@@ -4,12 +4,13 @@ import com.jfcorugedo.reactivedemo.wallet.model.Wallet;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.mapping.event.BeforeConvertCallback;
-import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 import reactor.core.publisher.Mono;
@@ -17,14 +18,18 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @Configuration
-@EnableR2dbcRepositories(basePackages = "com.jfcorugedo.reactivedemo.wallet")
+@ConditionalOnProperty(name = "dababase.vendor", havingValue = "h2")
 @Slf4j
-public class R2dbcConfig extends AbstractR2dbcConfiguration {
+public class H2R2dbcConfig extends AbstractR2dbcConfiguration {
+
+    @Value("${database.connectionUrl}")
+    private String connectionUrl;
+
     @Override
     @Bean("r2dbcConnectionFactory")
     public ConnectionFactory connectionFactory() {
         log.info("Creating connection factory");
-        return ConnectionFactories.get("r2dbc:h2:mem:///test?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+        return ConnectionFactories.get(connectionUrl);
     }
 
     @Bean
