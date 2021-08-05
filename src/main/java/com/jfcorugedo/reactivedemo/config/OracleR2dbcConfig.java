@@ -30,6 +30,9 @@ public class OracleR2dbcConfig extends AbstractR2dbcConfiguration {
     @Value("${database.serviceName}")
     private String serviceName;
 
+    @Value("${database.user}")
+    private String user;
+
     @Override
     @Bean("r2dbcConnectionFactory")
     public ConnectionFactory connectionFactory() {
@@ -42,7 +45,7 @@ public class OracleR2dbcConfig extends AbstractR2dbcConfiguration {
         String r2dbcUrl = "r2dbc:oracle://?oracleNetDescriptor="+descriptor;
         return ConnectionFactories.get(ConnectionFactoryOptions.parse(r2dbcUrl)
                 .mutate()
-                .option(ConnectionFactoryOptions.USER, "jfcorugedo")
+                .option(ConnectionFactoryOptions.USER, user)
                 .option(ConnectionFactoryOptions.PASSWORD, System.getenv("DB_PASSWORD"))
                 .build());
     }
