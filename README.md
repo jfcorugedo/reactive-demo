@@ -55,3 +55,5 @@ database.serviceName=ORCLCDB
 database.user=jfcorugedo
 ```
 And you need to set the password to an enviroment variable called `DB_PASSWORD` in your operating system.
+
+If you want to run Oracle database using docker, take a look at this [Oracle repository](https://github.com/oracle/docker-images/blob/main/OracleDatabase/SingleInstance/README.md).
